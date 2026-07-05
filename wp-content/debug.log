@@ -1,0 +1,59 @@
+[04-Jul-2026 21:36:22 UTC] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, function "filmworld_load_search_template" not found or invalid function name in /var/www/dev/wp-includes/class-wp-hook.php:343
+Stack trace:
+#0 /var/www/dev/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#1 /var/www/dev/wp-includes/template.php(103): apply_filters()
+#2 /var/www/dev/wp-includes/template.php(519): get_query_template()
+#3 /var/www/dev/wp-includes/template-loader.php(91): get_search_template()
+#4 /var/www/dev/wp-blog-header.php(19): require_once('...')
+#5 /var/www/dev/index.php(17): require('...')
+#6 {main}
+  thrown in /var/www/dev/wp-includes/class-wp-hook.php on line 343
+[04-Jul-2026 22:01:58 UTC] خطای رویداد زمانبندی‌شده مجدد Cron برای قلاب: action_scheduler_run_queue, کد خطا: invalid_schedule, پیغام خطا: زمان‌بندی رویداد وجود ندارد., داده: {"schedule":"every_minute","args":["WP Cron"],"interval":60}
+[05-Jul-2026 06:12:38 UTC] Automatic updates starting...
+[05-Jul-2026 06:12:41 UTC] Automatic updates complete.
+[05-Jul-2026 06:46:17 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /var/www/dev/wp-content/plugins/filmworld/templates/single-movie.php on line 305
+[05-Jul-2026 06:47:54 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /var/www/dev/wp-content/plugins/filmworld/templates/single-movie.php on line 305
+[05-Jul-2026 08:02:27 UTC] PHP Warning:  require_once(/var/www/dev/wp-content/plugins/filmworld/includes/series-bulk-import.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/includes/loader.php on line 36
+[05-Jul-2026 08:02:27 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/dev/wp-content/plugins/filmworld/includes/series-bulk-import.php' (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/includes/loader.php:36
+Stack trace:
+#0 /var/www/dev/wp-content/plugins/filmworld/filmworld.php(18): require_once()
+#1 /var/www/dev/wp-settings.php(589): include_once('...')
+#2 /var/www/dev/wp-config.php(105): require_once('...')
+#3 /var/www/dev/wp-load.php(50): require_once('...')
+#4 /var/www/dev/wp-admin/admin-ajax.php(22): require_once('...')
+#5 {main}
+  thrown in /var/www/dev/wp-content/plugins/filmworld/includes/loader.php on line 36
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 83
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 83
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:21:44 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 43
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 83
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 83
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:21:45 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:22:39 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 83
+[05-Jul-2026 08:22:39 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 83
+[05-Jul-2026 08:22:39 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:22:39 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:22:39 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:22:39 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:22:56 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:22:56 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:22:56 UTC] PHP Warning:  include(/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php): Failed to open stream: No such file or directory in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128
+[05-Jul-2026 08:22:56 UTC] PHP Warning:  include(): Failed opening '/var/www/dev/wp-content/plugins/filmworld/templates/parts/movie-card.php' for inclusion (include_path='.:/usr/share/php') in /var/www/dev/wp-content/plugins/filmworld/templates/front-page.php on line 128

@@ -1,0 +1,67 @@
+.filmworld-related{
+
+    margin-top:60px;
+
+}
+
+.filmworld-related-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:20px;
+
+}
+
+.filmworld-related-card{
+
+    border:1px solid #ddd;
+    border-radius:10px;
+    overflow:hidden;
+    background:#fff;
+    text-align:center;
+
+}
+
+.filmworld-related-card img{
+
+    width:100%;
+    height:auto;
+    display:block;
+
+}
+
+.filmworld-related-card h3{
+
+    font-size:16px;
+    margin:12px;
+
+}
+
+.filmworld-related-card p{
+
+    margin-bottom:15px;
+    color:#777;
+
+}
+
+.filmworld-related-card a{
+
+    text-decoration:none;
+    color:inherit;
+
+}
+
+.filmworld-player{
+
+    margin:40px 0;
+
+}
+
+#filmworld-player{
+
+    width:100%;
+    max-height:700px;
+    background:#000;
+    border-radius:10px;
+
+}
