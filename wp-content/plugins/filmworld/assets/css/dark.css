@@ -1,0 +1,51 @@
+/*
+|--------------------------------------------------------------------------
+| FilmWorld - Dark Mode Styles
+| Activated via body class .filmworld-dark
+|--------------------------------------------------------------------------
+*/
+
+body.filmworld-dark {
+    --fw-bg: #0d0d0d;
+    --fw-bg-card: #1a1a2e;
+    --fw-text: #e0e0e0;
+    --fw-text-secondary: #aaa;
+    --fw-text-muted: #777;
+    --fw-border: #2a2a3e;
+    --fw-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    --fw-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.4);
+    --fw-primary-light: rgba(229, 9, 20, 0.2);
+    background: var(--fw-bg);
+    color: var(--fw-text);
+}
+
+body.filmworld-dark #filmworld-player-modal {
+    background: rgba(0, 0, 0, 0.95);
+}
+
+body.filmworld-dark .filmworld-download-table thead {
+    background: linear-gradient(135deg, var(--fw-primary), #8b0000);
+}
+
+body.filmworld-dark .filmworld-locked {
+    border-color: var(--fw-border);
+    background: var(--fw-bg-card);
+}
+
+body.filmworld-dark .nav-links a,
+body.filmworld-dark .nav-links span {
+    background: var(--fw-bg-card);
+    border-color: var(--fw-border);
+    color: var(--fw-text);
+}
+
+body.filmworld-dark .filmworld-stream-btn {
+    background: #e0e0e0;
+    color: #1a1a2e !important;
+}
+
+body.filmworld-dark .filmworld-stream-btn:hover {
+    background: transparent;
+    color: #e0e0e0 !important;
+    border-color: #e0e0e0;
+}

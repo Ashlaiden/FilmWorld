@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 7.0.x - Development - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-06-16 11:55:02+0000\n"
+"PO-Revision-Date: 2026-07-05 21:05:12+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -84,7 +84,7 @@ msgstr "یک مرکز یکپارچه برای اتصالات شما."
 
 #: wp-admin/about.php:92
 msgid "AI foundations"
-msgstr "مبانی هوش مصنوعی"
+msgstr "زیرساخت‌های هوش مصنوعی"
 
 #: wp-admin/about.php:75
 msgid "Build the menu overlay you want visitors to see. Go beyond a simple list of links: add columns, increase the font size, and align everything to your liking. Start from a pre-built template, or design your own from scratch."

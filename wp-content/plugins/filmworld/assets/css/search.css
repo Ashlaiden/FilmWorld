@@ -1,0 +1,59 @@
+/*
+|--------------------------------------------------------------------------
+| FilmWorld - Search Page Styles
+|--------------------------------------------------------------------------
+*/
+
+.filmworld-search > h1 {
+    margin-bottom: 8px;
+}
+
+.filmworld-search-count {
+    color: var(--fw-text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+.filmworld-search form {
+    margin-bottom: 30px;
+}
+
+.filmworld-search form input[type="search"] {
+    width: 100%;
+    max-width: 500px;
+    padding: 14px 20px;
+    border: 2px solid var(--fw-border);
+    border-radius: 50px;
+    background: var(--fw-bg-card);
+    color: var(--fw-text);
+    font-family: var(--fw-font);
+    font-size: 1rem;
+    direction: rtl;
+    transition: border-color var(--fw-transition);
+    box-shadow: var(--fw-shadow);
+}
+
+.filmworld-search form input[type="search"]:focus {
+    outline: none;
+    border-color: var(--fw-primary);
+}
+
+.filmworld-search form button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 30px;
+    background: var(--fw-primary);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--fw-font);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--fw-transition);
+}
+
+.filmworld-search form button:hover {
+    background: var(--fw-primary-hover);
+    transform: translateY(-1px);
+}

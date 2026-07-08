@@ -1,0 +1,326 @@
+/*
+|--------------------------------------------------------------------------
+| FilmWorld - Single Movie / Series Page Styles
+|--------------------------------------------------------------------------
+*/
+
+/* ---- Header Area ---- */
+.filmworld-movie-header,
+.filmworld-series .filmworld-header {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 35px;
+    background: var(--fw-bg-card);
+    border-radius: var(--fw-radius);
+    padding: 25px;
+    box-shadow: var(--fw-shadow);
+}
+
+.filmworld-poster {
+    flex-shrink: 0;
+    width: 280px;
+}
+
+.filmworld-poster img {
+    width: 100%;
+    border-radius: var(--fw-radius-sm);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.filmworld-info {
+    flex: 1;
+}
+
+.filmworld-info h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0 0 8px;
+    color: var(--fw-text);
+    line-height: 1.4;
+}
+
+.filmworld-info h3 {
+    font-size: 1rem;
+    color: var(--fw-text-muted);
+    font-weight: 400;
+    margin: 0 0 20px;
+    direction: ltr;
+    text-align: right;
+}
+
+.filmworld-info-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.filmworld-info-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.filmworld-info-meta-item span {
+    font-size: 0.75rem;
+    color: var(--fw-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filmworld-info-meta-item strong {
+    font-size: 0.95rem;
+    color: var(--fw-text);
+}
+
+/* IMDB Badge */
+.filmworld-imdb-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: #f5c518;
+    color: #000;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    margin-top: 12px;
+}
+
+.filmworld-imdb-badge a {
+    color: #000;
+    text-decoration: underline;
+}
+
+/* ---- Action Buttons ---- */
+.filmworld-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* ---- Description ---- */
+.filmworld-description {
+    background: var(--fw-bg-card);
+    border-radius: var(--fw-radius);
+    padding: 25px;
+    margin-bottom: 35px;
+    box-shadow: var(--fw-shadow);
+    line-height: 1.9;
+    font-size: 0.95rem;
+}
+
+/* ---- Downloads Section ---- */
+.filmworld-downloads {
+    margin-bottom: 35px;
+}
+
+.filmworld-downloads > h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--fw-text);
+}
+
+.filmworld-download-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* ---- Related Movies ---- */
+.filmworld-related {
+    margin-top: 50px;
+}
+
+.filmworld-related > h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--fw-primary);
+    display: inline-block;
+}
+
+.filmworld-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 18px;
+}
+
+.filmworld-related-card {
+    background: var(--fw-bg-card);
+    border-radius: var(--fw-radius);
+    overflow: hidden;
+    box-shadow: var(--fw-shadow);
+    transition: transform var(--fw-transition), box-shadow var(--fw-transition);
+}
+
+.filmworld-related-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--fw-shadow-hover);
+}
+
+.filmworld-related-card a {
+    display: block;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+}
+
+.filmworld-related-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--fw-transition);
+}
+
+.filmworld-related-card:hover img {
+    transform: scale(1.05);
+}
+
+.filmworld-related-card .card-body {
+    padding: 12px;
+    text-align: center;
+}
+
+.filmworld-related-card h3 {
+    font-size: 0.9rem;
+    margin: 0 0 4px;
+    font-weight: 700;
+}
+
+.filmworld-related-card h3 a {
+    color: var(--fw-text);
+}
+
+.filmworld-related-card h3 a:hover {
+    color: var(--fw-primary);
+}
+
+.filmworld-related-card .card-body p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--fw-text-muted);
+}
+
+/* ---- Series Episodes ---- */
+.filmworld-seasons {
+    background: var(--fw-bg-card);
+    border-radius: var(--fw-radius);
+    padding: 25px;
+    box-shadow: var(--fw-shadow);
+}
+
+.filmworld-seasons > h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--fw-text);
+}
+
+.filmworld-season {
+    margin-bottom: 25px;
+}
+
+.filmworld-season:last-child {
+    margin-bottom: 0;
+}
+
+.filmworld-season > h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 10px 16px;
+    background: var(--fw-primary);
+    color: #fff;
+    border-radius: var(--fw-radius-sm);
+    margin-bottom: 14px;
+}
+
+.filmworld-quality-group {
+    margin-bottom: 16px;
+}
+
+.filmworld-quality-group h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--fw-text-secondary);
+    padding: 8px 14px;
+    background: var(--fw-bg);
+    border-radius: var(--fw-radius-sm);
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.filmworld-episodes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+}
+
+.filmworld-episode {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--fw-bg);
+    border-radius: var(--fw-radius-sm);
+    font-size: 0.9rem;
+    transition: all var(--fw-transition);
+}
+
+.filmworld-episode:hover {
+    background: var(--fw-primary-light);
+}
+
+.filmworld-episode span {
+    font-weight: 600;
+    color: var(--fw-text);
+}
+
+.filmworld-episode a {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--fw-primary);
+    white-space: nowrap;
+}
+
+.filmworld-episode a:hover {
+    color: var(--fw-primary-hover);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .filmworld-movie-header,
+    .filmworld-series .filmworld-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .filmworld-poster {
+        width: 200px;
+    }
+
+    .filmworld-info h1 {
+        font-size: 1.4rem;
+    }
+
+    .filmworld-info-meta {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filmworld-actions {
+        justify-content: center;
+    }
+
+    .filmworld-episodes {
+        grid-template-columns: 1fr;
+    }
+
+    .filmworld-related-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+    }
+}

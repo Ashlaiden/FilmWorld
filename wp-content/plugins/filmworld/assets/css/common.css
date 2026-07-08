@@ -1,0 +1,536 @@
+/*
+|--------------------------------------------------------------------------
+| FilmWorld - Common Styles (v2.0)
+| Shared base styles used across all pages
+|--------------------------------------------------------------------------
+*/
+
+/* ---- CSS Variables ---- */
+:root {
+    --fw-primary: #e50914;
+    --fw-primary-hover: #f40612;
+    --fw-primary-light: rgba(229, 9, 20, 0.15);
+    --fw-bg: #f5f5f5;
+    --fw-bg-card: #ffffff;
+    --fw-bg-header: rgba(0, 0, 0, 0.95);
+    --fw-text: #1a1a2e;
+    --fw-text-secondary: #555;
+    --fw-text-muted: #888;
+    --fw-border: #e0e0e0;
+    --fw-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    --fw-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+    --fw-radius: 12px;
+    --fw-radius-sm: 8px;
+    --fw-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --fw-max-width: 1300px;
+    --fw-font: 'Vazirmatn', 'IRANSans', 'Tahoma', sans-serif;
+}
+
+/* ---- Reset & Base ---- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fw-font);
+    background: var(--fw-bg);
+    color: var(--fw-text);
+    line-height: 1.7;
+    direction: rtl;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: var(--fw-primary);
+    text-decoration: none;
+    transition: color var(--fw-transition);
+}
+
+a:hover {
+    color: var(--fw-primary-hover);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ---- Container ---- */
+.filmworld-container,
+.filmworld-home,
+.filmworld-archive,
+.filmworld-search,
+.filmworld-movie,
+.filmworld-series,
+.filmworld-account {
+    max-width: var(--fw-max-width);
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* ---- Section Titles ---- */
+.filmworld-section {
+    margin-bottom: 50px;
+}
+
+.filmworld-section > h2,
+.filmworld-home h1,
+.filmworld-archive > h1,
+.filmworld-search > h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--fw-primary);
+    display: inline-block;
+    color: var(--fw-text);
+}
+
+/* ---- Media Card Grid ---- */
+.filmworld-movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+}
+
+/* ---- Media Card ---- */
+.filmworld-media-item {
+    background: var(--fw-bg-card);
+    border-radius: var(--fw-radius);
+    overflow: hidden;
+    box-shadow: var(--fw-shadow);
+    transition: transform var(--fw-transition), box-shadow var(--fw-transition);
+    position: relative;
+}
+
+.filmworld-media-item:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--fw-shadow-hover);
+}
+
+.filmworld-media-poster {
+    position: relative;
+    display: block;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+}
+
+.filmworld-media-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--fw-transition);
+}
+
+.filmworld-media-item:hover .filmworld-media-poster img {
+    transform: scale(1.05);
+}
+
+.filmworld-media-type {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--fw-primary);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.filmworld-media-content {
+    padding: 14px;
+}
+
+.filmworld-media-content h2 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+    line-height: 1.4;
+}
+
+.filmworld-media-content h2 a {
+    color: var(--fw-text);
+}
+
+.filmworld-media-content h2 a:hover {
+    color: var(--fw-primary);
+}
+
+.filmworld-english-title {
+    font-size: 0.8rem;
+    color: var(--fw-text-muted);
+    margin: 0 0 8px !important;
+}
+
+.filmworld-media-content p {
+    font-size: 0.8rem;
+    color: var(--fw-text-secondary);
+    margin: 3px 0;
+    line-height: 1.5;
+}
+
+.filmworld-media-content p strong {
+    color: var(--fw-text);
+}
+
+.filmworld-view-btn {
+    display: inline-block !important;
+    margin-top: 10px !important;
+    padding: 8px 18px !important;
+    background: var(--fw-primary);
+    color: #fff !important;
+    border-radius: var(--fw-radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all var(--fw-transition);
+    text-align: center;
+    width: 100%;
+}
+
+.filmworld-view-btn:hover {
+    background: var(--fw-primary-hover);
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+/* ---- Favorite Button ---- */
+.filmworld-fav-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--fw-transition);
+    z-index: 3;
+    backdrop-filter: blur(4px);
+}
+
+.filmworld-fav-btn:hover,
+.filmworld-fav-btn.active {
+    background: var(--fw-primary);
+    transform: scale(1.1);
+}
+
+/* ---- Pagination ---- */
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 40px;
+    padding: 20px 0;
+}
+
+.nav-links a,
+.nav-links span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 14px;
+    border-radius: var(--fw-radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all var(--fw-transition);
+    border: 2px solid var(--fw-border);
+    background: var(--fw-bg-card);
+    color: var(--fw-text);
+}
+
+.nav-links a:hover {
+    border-color: var(--fw-primary);
+    color: var(--fw-primary);
+}
+
+.nav-links span.current {
+    background: var(--fw-primary);
+    border-color: var(--fw-primary);
+    color: #fff;
+}
+
+/* ---- Download Table ---- */
+.filmworld-download-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--fw-radius);
+    overflow: hidden;
+    box-shadow: var(--fw-shadow);
+    background: var(--fw-bg-card);
+}
+
+.filmworld-download-table thead {
+    background: linear-gradient(135deg, var(--fw-primary), #b20710);
+    color: #fff;
+}
+
+.filmworld-download-table th {
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.filmworld-download-table td {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--fw-border);
+    font-size: 0.9rem;
+}
+
+.filmworld-download-table tbody tr:hover {
+    background: var(--fw-primary-light);
+}
+
+.filmworld-download-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ---- Buttons ---- */
+.filmworld-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    background: var(--fw-primary);
+    color: #fff !important;
+    border-radius: var(--fw-radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all var(--fw-transition);
+}
+
+.filmworld-download-btn:hover {
+    background: var(--fw-primary-hover);
+    color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+}
+
+.filmworld-stream-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    background: #1a1a2e;
+    color: #fff !important;
+    border-radius: var(--fw-radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all var(--fw-transition);
+    border: 2px solid transparent;
+}
+
+.filmworld-stream-btn:hover {
+    background: transparent;
+    color: #1a1a2e !important;
+    border-color: #1a1a2e;
+    transform: translateY(-1px);
+}
+
+/* ---- Player Modal ---- */
+#filmworld-player-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 999999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+}
+
+#filmworld-player-modal.active {
+    display: flex;
+}
+
+#filmworld-video-player {
+    width: 100%;
+    max-width: 1000px;
+    max-height: 80vh;
+    border-radius: var(--fw-radius);
+    background: #000;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+#filmworld-player-close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--fw-transition);
+    backdrop-filter: blur(4px);
+}
+
+#filmworld-player-close:hover {
+    background: var(--fw-primary);
+    border-color: var(--fw-primary);
+    transform: scale(1.1);
+}
+
+/* ---- Info Meta Tags ---- */
+.filmworld-meta-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.filmworld-meta-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: var(--fw-primary-light);
+    color: var(--fw-primary);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.filmworld-meta-tag a {
+    color: inherit;
+}
+
+.filmworld-meta-tag a:hover {
+    color: var(--fw-primary-hover);
+}
+
+/* ---- Lock / No Access ---- */
+.filmworld-locked {
+    background: var(--fw-bg-card);
+    border: 2px dashed var(--fw-border);
+    border-radius: var(--fw-radius);
+    padding: 30px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.filmworld-locked p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+.filmworld-locked-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.filmworld-lock-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 24px;
+    background: var(--fw-primary);
+    color: #fff !important;
+    border-radius: var(--fw-radius-sm);
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all var(--fw-transition);
+}
+
+.filmworld-lock-btn:hover {
+    background: var(--fw-primary-hover);
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+}
+
+/* ---- Dark Mode Toggle ---- */
+.filmworld-dark-toggle {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--fw-primary);
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--fw-transition);
+}
+
+.filmworld-dark-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .filmworld-movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 14px;
+    }
+
+    .filmworld-container,
+    .filmworld-home,
+    .filmworld-archive,
+    .filmworld-search,
+    .filmworld-movie,
+    .filmworld-series,
+    .filmworld-account {
+        padding: 16px 12px;
+    }
+
+    .filmworld-download-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .filmworld-section > h2,
+    .filmworld-home h1,
+    .filmworld-archive > h1,
+    .filmworld-search > h1 {
+        font-size: 1.2rem;
+    }
+
+    .filmworld-media-content {
+        padding: 10px;
+    }
+
+    .filmworld-media-content h2 {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .filmworld-movies-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .filmworld-media-content p,
+    .filmworld-english-title {
+        display: none;
+    }
+}

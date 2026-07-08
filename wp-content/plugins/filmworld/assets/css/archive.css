@@ -1,0 +1,75 @@
+/*
+|--------------------------------------------------------------------------
+| FilmWorld - Archive & Taxonomy Page Styles
+|--------------------------------------------------------------------------
+*/
+
+/* Filter Bar */
+.filmworld-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--fw-bg-card);
+    border-radius: var(--fw-radius);
+    box-shadow: var(--fw-shadow);
+}
+
+.filmworld-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 160px;
+    flex: 1;
+}
+
+.filmworld-filter-group label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--fw-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filmworld-filter-group select {
+    padding: 10px 14px;
+    border: 2px solid var(--fw-border);
+    border-radius: var(--fw-radius-sm);
+    background: var(--fw-bg);
+    color: var(--fw-text);
+    font-family: var(--fw-font);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color var(--fw-transition);
+    direction: rtl;
+    appearance: auto;
+}
+
+.filmworld-filter-group select:focus {
+    outline: none;
+    border-color: var(--fw-primary);
+}
+
+/* Empty State */
+.filmworld-archive > p,
+.filmworld-search > p {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--fw-bg-card);
+    border-radius: var(--fw-radius);
+    box-shadow: var(--fw-shadow);
+    font-size: 1.05rem;
+    color: var(--fw-text-secondary);
+}
+
+/* Taxonomy Description */
+.filmworld-taxonomy-description {
+    margin-bottom: 25px;
+    padding: 16px 20px;
+    background: var(--fw-bg-card);
+    border-radius: var(--fw-radius-sm);
+    border-right: 4px solid var(--fw-primary);
+    color: var(--fw-text-secondary);
+    font-size: 0.95rem;
+}

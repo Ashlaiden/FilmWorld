@@ -8,19 +8,18 @@ get_header();
 
     <section class="filmworld-hero">
 
-        <h1>FilmWorld</h1>
+        <h1>Film<span>World</span></h1>
 
-        <p>مرجع دانلود و مشاهده فیلم و سریال</p>
+        <p>مرجع دانلود و تماشای فیلم و سریال با زیرنویس فارسی</p>
 
         <?php include __DIR__ . '/searchform.php'; ?>
 
     </section>
 
-    <!-- جدیدترین فیلم‌ها -->
-
+    <!-- Latest Movies -->
     <section class="filmworld-section">
 
-        <h2>🎬 جدیدترین فیلم‌ها</h2>
+        <h2>جدیدترین فیلم‌ها</h2>
 
         <?php
 
@@ -48,6 +47,12 @@ get_header();
 
             <?php wp_reset_postdata(); ?>
 
+            <div style="text-align:center;margin-top:24px;">
+                <a href="<?php echo esc_url(get_post_type_archive_link('movie')); ?>" class="filmworld-view-btn" style="display:inline-block;width:auto;padding:10px 30px;">
+                    مشاهده همه فیلم‌ها
+                </a>
+            </div>
+
         <?php else : ?>
 
             <p>فیلمی ثبت نشده است.</p>
@@ -56,11 +61,10 @@ get_header();
 
     </section>
 
-    <!-- جدیدترین سریال‌ها -->
-
+    <!-- Latest Series -->
     <section class="filmworld-section">
 
-        <h2>📺 جدیدترین سریال‌ها</h2>
+        <h2>جدیدترین سریال‌ها</h2>
 
         <?php
 
@@ -88,6 +92,12 @@ get_header();
 
             <?php wp_reset_postdata(); ?>
 
+            <div style="text-align:center;margin-top:24px;">
+                <a href="<?php echo esc_url(get_post_type_archive_link('series')); ?>" class="filmworld-view-btn" style="display:inline-block;width:auto;padding:10px 30px;">
+                    مشاهده همه سریال‌ها
+                </a>
+            </div>
+
         <?php else : ?>
 
             <p>سریالی ثبت نشده است.</p>
@@ -96,11 +106,10 @@ get_header();
 
     </section>
 
-    <!-- فیلم‌های دوبله فارسی -->
-
+    <!-- Dubbed Movies -->
     <section class="filmworld-section">
 
-        <h2>🎭 فیلم‌های دوبله فارسی</h2>
+        <h2>فیلم‌های دوبله فارسی</h2>
 
         <?php
 
@@ -145,4 +154,4 @@ get_header();
 
 <?php
 
-get_footer();
+get_footer(); ?>
