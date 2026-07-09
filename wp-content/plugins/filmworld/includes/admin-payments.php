@@ -58,7 +58,7 @@ function filmworld_admin_payments_page() {
     if (!empty($values)) {
         $total = $wpdb->get_var($wpdb->prepare(
             "SELECT COUNT(*) FROM $table p LEFT JOIN {$wpdb->users} u ON p.user_id = u.ID WHERE $where_sql",
-            $values
+            ...$values
         ));
     } else {
         $total = $wpdb->get_var("SELECT COUNT(*) FROM $table p LEFT JOIN {$wpdb->users} u ON p.user_id = u.ID WHERE $where_sql");
@@ -66,6 +66,7 @@ function filmworld_admin_payments_page() {
 
     // Fetch payments
     if (!empty($values)) {
+        $all_vals = array_merge($values, [$per_page, $offset]);
         $payments = $wpdb->get_results($wpdb->prepare(
             "SELECT p.*, u.user_login, u.display_name, u.user_email
              FROM $table p
@@ -73,7 +74,7 @@ function filmworld_admin_payments_page() {
              WHERE $where_sql
              ORDER BY p.created_at DESC
              LIMIT %d OFFSET %d",
-            array_merge($values, [$per_page, $offset])
+            ...$all_vals
         ));
     } else {
         $payments = $wpdb->get_results($wpdb->prepare(
@@ -513,7 +514,7 @@ function filmworld_ajax_admin_extend_subscription() {
 
     wp_send_json_success('اشتراک برای ' . $days . ' روز تمدید شد.');
 }
-add_action('wp_ajax_filmworld_admin_extend_subscription', 'filmworld_ajax_extend_subscription');
+add_action('wp_ajax_filmworld_admin_extend_subscription', 'filmworld_ajax_admin_extend_subscription');
 
 /*
 |--------------------------------------------------------------------------
@@ -523,7 +524,7 @@ add_action('wp_ajax_filmworld_admin_extend_subscription', 'filmworld_ajax_extend
 
 function filmworld_payments_admin_menu() {
     add_submenu_page(
-        'filmworld-taxonomies',
+        'filmworld-dashboard',
         'پرداخت‌ها',
         'پرداخت‌ها',
         'manage_options',
@@ -532,7 +533,7 @@ function filmworld_payments_admin_menu() {
     );
 
     add_submenu_page(
-        'filmworld-taxonomies',
+        'filmworld-dashboard',
         'اشتراک‌ها',
         'اشتراک‌ها',
         'manage_options',
@@ -540,4 +541,4 @@ function filmworld_payments_admin_menu() {
         'filmworld_admin_subscriptions_page'
     );
 }
-add_action('admin_menu', 'filmworld_payments_admin_menu');
+// Menu registration moved to admin-menu.php for correct ordering

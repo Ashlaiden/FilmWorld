@@ -26,7 +26,7 @@ define( 'DB_NAME', 'dev' );
 define( 'DB_USER', 'dev' );
 
 /** Database password */
-define( 'DB_PASSWORD', '123456789' );
+define( 'DB_PASSWORD', 'dev' );
 
 /** Database hostname */
 define( 'DB_HOST', '192.168.5.3' );
@@ -48,14 +48,14 @@ define( 'DB_COLLATE', '' );
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         'UbJ(l6L&#=}59xXK0dGiYXN)$l[}Mik$J9d8<or~fAoYiN]* |.5WC*2/U<bnK8&' );
-define( 'SECURE_AUTH_KEY',  '~!C;{w_SKy>ogW5x:20mK:.73({}mVjfa)%:2ng~?HTwdvX-cau&ynk2V 45`ujH' );
-define( 'LOGGED_IN_KEY',    'q#?B>J%g<YpqbW[Ey+@ |W!4jVN}&%&Jp0,E&, dkHFS 8VOO_N>/XH_IkqlKp}6' );
-define( 'NONCE_KEY',        ' 84p:2Yfd#(`Zk`$sx~n5Q<ERw7:N3[)I6.r+d=K--h}Wxyo%~_xAj&q7IC^8nwj' );
-define( 'AUTH_SALT',        '^YNu3w,Pvv]@g>XS9eGQMyyJ`qfa$]rJ+Lqxs BU^XG(lX~.p-BS2j%@8/9Ht1WB' );
-define( 'SECURE_AUTH_SALT', '~g:2`D6k0EH^@<a>_*psX5a-yD5+;&u$tA05!*u)uk8?nCn&LcLaL,(*vjhw5>+1' );
-define( 'LOGGED_IN_SALT',   'TVZv`(6JrTF^oM?XGXtU_RMA4.)kI0?oTBO*L3m6a0N#d=/q$HMELGF@QZ!Sp-W_' );
-define( 'NONCE_SALT',       'vtv!r_YQECKJv0p8-5bMrvoA~@YA~r=Pz}3eik^ [hGhUpU.2u!Di2e%?C72kOW^' );
+define( 'AUTH_KEY',         '6f&C{2#]MWvgQ>T!em+19s66x2(0Eb~s`4Xzk8G++b<]M`H$mV=NQDPT$%&gbbrI' );
+define( 'SECURE_AUTH_KEY',  'FR;yZi$C(rz0e! JhC(*b^eg#!B=>JTWzkIp.^.b7|;:!:(li8N~Ck0NVk{F>?RN' );
+define( 'LOGGED_IN_KEY',    'oLDG6SIp( qha<(N*y)j=Drk>B_g%#G=)l?pLf1cP|+6v~fxQ]o~]wmTa})};;CD' );
+define( 'NONCE_KEY',        'AiNQ8T6OJ-|H[YBZ>$<0-)v<I}-W;giPs.3w-@VHFvO6b8kMI_YmXYSRubflH?}4' );
+define( 'AUTH_SALT',        '?<*.x F?WIvd#;OGtOqSzj)[s=`C_:G8fm#;HMLC|*Y<q+fLnaR1hv*.E@dIk{5@' );
+define( 'SECURE_AUTH_SALT', '%~de&uzTWS!,05BfBxioLk&Xh6Z3=$QJ`8[pH_w[)>Uyf_8~qM|Jn0F>~@IZLDT.' );
+define( 'LOGGED_IN_SALT',   'Nr%0zf_okdM>)R&)=sH1geM3HOOo7.XDUlvi~?VcP/}*X9/2UuAk8OU9`/mniab^' );
+define( 'NONCE_SALT',       'g8nywVRBjSSHc>t<Z$d%WlQ8X:ge=fBt@%N^.wp#Wn.:&bwCL M=Hp*YJpXK>YSk' );
 
 /**#@-*/
 
@@ -85,10 +85,7 @@ $table_prefix = 'wp_';
  *
  * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
-// define( 'WP_DEBUG', false );
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', true);
+define( 'WP_DEBUG', false );
 
 /* Add any custom values between this line and the "stop editing" line. */
 

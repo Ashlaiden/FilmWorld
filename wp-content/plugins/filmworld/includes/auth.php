@@ -21,7 +21,20 @@ add_action('init', 'filmworld_auth_rewrites');
 
 /*
 |--------------------------------------------------------------------------
-| Template Redirect (یک تابع برای همه)
+| Force flush rewrite rules if needed (fixes blank pages)
+|--------------------------------------------------------------------------
+*/
+
+add_action('wp_loaded', function() {
+    $rules = get_option('rewrite_rules');
+    if (!isset($rules['^login/?$']) || !isset($rules['^register/?$']) || !isset($rules['^account/?$'])) {
+        flush_rewrite_rules();
+    }
+});
+
+/*
+|--------------------------------------------------------------------------
+| Template Redirect
 |--------------------------------------------------------------------------
 */
 
@@ -33,13 +46,13 @@ function filmworld_page_template_redirect($template)
         return $template;
     }
 
-    // اگر لاگین کرده و صفحه لاگین/ثبت‌نامه، بفرست به اکانت
+    // If logged in and visiting login/register, redirect to account
     if (is_user_logged_in() && in_array($page, ['login', 'register'])) {
         wp_redirect(home_url('/account/'));
         exit;
     }
 
-    // اگر لاگین نکرده و صفحه اکانته، بفرست به لاگین
+    // If not logged in and visiting account, redirect to login
     if (!is_user_logged_in() && $page === 'account') {
         wp_redirect(home_url('/login/'));
         exit;

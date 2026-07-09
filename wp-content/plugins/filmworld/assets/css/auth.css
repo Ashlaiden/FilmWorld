@@ -1,0 +1,419 @@
+/*
+|--------------------------------------------------------------------------
+| FilmWorld v3.0 — Auth Pages (Login, Register, Account) Styles
+|--------------------------------------------------------------------------
+*/
+
+/* ---- Auth Pages (login/register) ---- */
+.fw-auth-page {
+    min-height: calc(100vh - var(--fw-header-h));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+    margin-top: calc(var(--fw-header-h) * -1);
+    padding-top: calc(var(--fw-header-h) + 40px);
+}
+
+.fw-auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--fw-bg-card);
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius);
+    padding: 40px 32px;
+    box-shadow: var(--fw-shadow-lg);
+}
+
+.fw-auth-header { text-align: center; margin-bottom: 30px; }
+
+.fw-auth-logo {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.fw-auth-logo span { color: var(--fw-primary); }
+
+.fw-auth-header p {
+    color: var(--fw-text-muted);
+    margin: 0;
+    font-size: 0.92rem;
+}
+
+.fw-auth-form .fw-form-group { margin-bottom: 18px; }
+
+.fw-auth-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    color: var(--fw-text-secondary);
+}
+
+.fw-auth-form input[type="text"],
+.fw-auth-form input[type="password"],
+.fw-auth-form input[type="email"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-xs);
+    background: var(--fw-bg);
+    color: var(--fw-text);
+    font-family: var(--fw-font);
+    font-size: 0.92rem;
+    direction: rtl;
+    transition: all var(--fw-transition);
+    box-sizing: border-box;
+}
+
+.fw-auth-form input::placeholder { color: var(--fw-text-muted); }
+
+.fw-auth-form input:focus {
+    outline: none;
+    border-color: var(--fw-primary);
+    box-shadow: 0 0 0 3px var(--fw-primary-light);
+}
+
+.fw-auth-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    font-size: 0.84rem;
+}
+
+.fw-auth-row a {
+    color: var(--fw-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.fw-auth-row a:hover { color: var(--fw-primary-hover); }
+
+.fw-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--fw-text-secondary);
+}
+
+.fw-checkbox input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--fw-primary);
+}
+
+.fw-auth-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--fw-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--fw-radius-sm);
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: var(--fw-font);
+    cursor: pointer;
+    transition: all var(--fw-transition);
+}
+
+.fw-auth-btn:hover {
+    background: var(--fw-primary-hover);
+    box-shadow: 0 6px 25px var(--fw-primary-glow);
+    transform: translateY(-1px);
+}
+
+.fw-auth-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.fw-auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--fw-border);
+    font-size: 0.88rem;
+    color: var(--fw-text-muted);
+}
+
+.fw-auth-footer a {
+    color: var(--fw-primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.fw-auth-footer a:hover { color: var(--fw-primary-hover); }
+
+.fw-auth-notice {
+    padding: 12px 16px;
+    border-radius: var(--fw-radius-xs);
+    margin-top: 14px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-align: center;
+    background: var(--fw-bg);
+    border: 1px solid var(--fw-border);
+}
+
+.fw-auth-notice-error { color: #fca5a5; border-color: rgba(239,68,68,0.3); }
+.fw-auth-notice-success { color: #86efac; border-color: rgba(34,197,94,0.3); }
+
+/* ---- Account Page ---- */
+.fw-account-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 24px;
+}
+
+.fw-account-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 30px;
+    background: var(--fw-bg-card);
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius);
+    padding: 6px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+}
+
+.fw-account-tab {
+    padding: 10px 20px;
+    border-radius: var(--fw-radius-xs);
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--fw-text-muted);
+    transition: all var(--fw-transition);
+    white-space: nowrap;
+    text-decoration: none;
+    display: block;
+}
+
+.fw-account-tab:hover { color: var(--fw-text); background: rgba(255,255,255,0.04); }
+.fw-account-tab.active { background: var(--fw-primary); color: #fff; }
+
+.fw-account-card {
+    background: var(--fw-bg-card);
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius);
+    padding: 30px;
+}
+
+.fw-account-card h2 {
+    margin: 0 0 25px;
+    font-size: 1.3rem;
+    color: #fff;
+}
+
+.fw-account-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.fw-stat {
+    text-align: center;
+    padding: 18px;
+    background: var(--fw-bg);
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-sm);
+}
+
+.fw-stat-value {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.fw-stat-label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--fw-text-muted);
+    margin-top: 4px;
+}
+
+/* Plans Grid */
+.fw-plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.fw-plan-card {
+    background: var(--fw-bg);
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius);
+    padding: 30px;
+    text-align: center;
+    transition: all var(--fw-transition);
+}
+
+.fw-plan-card:hover {
+    border-color: var(--fw-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(229, 9, 20, 0.15);
+}
+
+.fw-plan-card h3 { font-size: 1.2rem; color: #fff; margin: 0 0 10px; }
+
+.fw-plan-price {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--fw-primary);
+    margin-bottom: 4px;
+}
+
+.fw-plan-price small { font-size: 0.9rem; font-weight: 400; color: var(--fw-text-muted); }
+
+.fw-plan-duration { color: var(--fw-text-secondary); margin-bottom: 12px; font-size: 0.9rem; }
+
+.fw-plan-desc {
+    color: var(--fw-text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    line-height: 1.7;
+}
+
+/* Profile Form */
+.fw-profile-form .fw-form-input {
+    max-width: 400px;
+}
+
+.fw-profile-form small {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.78rem;
+    color: var(--fw-text-muted);
+}
+
+/* ---- Gateway Selection Modal ---- */
+.fw-gateway-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--fw-font);
+}
+
+.fw-gateway-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.fw-gateway-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    margin: 16px;
+    background: var(--fw-bg-card);
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius);
+    overflow: hidden;
+    box-shadow: var(--fw-shadow-lg);
+    animation: fwModalIn 0.25s ease;
+}
+
+@keyframes fwModalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.fw-gateway-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--fw-border);
+}
+
+.fw-gateway-modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.fw-gateway-modal-close {
+    background: none;
+    border: none;
+    color: var(--fw-text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color var(--fw-transition);
+}
+
+.fw-gateway-modal-close:hover { color: var(--fw-text); }
+
+.fw-gateway-modal-body { padding: 12px; }
+
+.fw-gateway-options { display: flex; flex-direction: column; gap: 6px; }
+
+.fw-gateway-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 16px 18px;
+    background: var(--fw-bg);
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-sm);
+    color: var(--fw-text);
+    font-family: var(--fw-font);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--fw-transition);
+    text-align: right;
+}
+
+.fw-gateway-option:hover {
+    border-color: var(--fw-primary);
+    background: var(--fw-primary-light);
+    transform: translateX(-4px);
+}
+
+.fw-gateway-option:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.fw-gateway-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--fw-primary);
+    flex-shrink: 0;
+}
+
+.fw-gateway-name { flex: 1; }
+
+.fw-gateway-chevron {
+    color: var(--fw-text-muted);
+    flex-shrink: 0;
+    transition: transform var(--fw-transition);
+}
+
+.fw-gateway-option:hover .fw-gateway-chevron {
+    color: var(--fw-primary);
+    transform: translateX(-3px);
+}
+
+@media (max-width: 768px) {
+    .fw-auth-card { padding: 30px 20px; }
+    .fw-auth-logo { font-size: 1.7rem; }
+    .fw-account-page { padding: 20px 16px; }
+    .fw-account-stats { grid-template-columns: repeat(2, 1fr); }
+    .fw-plans-grid { grid-template-columns: 1fr; }
+}

@@ -108,41 +108,6 @@ add_action('admin_init', 'filmworld_maybe_create_payments_table');
 
 /*
 |--------------------------------------------------------------------------
-| Membership Plans
-|--------------------------------------------------------------------------
-*/
-
-function filmworld_get_plans() {
-    $plans = get_option('filmworld_plans', []);
-
-    if (empty($plans)) {
-        $plans = [
-            'monthly' => [
-                'name'        => 'یک ماهه',
-                'price'       => 49000,
-                'days'        => 30,
-                'description' => 'دسترسی ۳۰ روزه به تمام فیلم‌ها و سریال‌ها',
-            ],
-            'quarterly' => [
-                'name'        => 'سه ماهه',
-                'price'       => 119000,
-                'days'        => 90,
-                'description' => 'دسترسی ۹۰ روزه به تمام فیلم‌ها و سریال‌ها',
-            ],
-            'yearly' => [
-                'name'        => 'یک ساله',
-                'price'       => 389000,
-                'days'        => 365,
-                'description' => 'دسترسی ۳۶۵ روزه به تمام فیلم‌ها و سریال‌ها',
-            ],
-        ];
-    }
-
-    return $plans;
-}
-
-/*
-|--------------------------------------------------------------------------
 | Payment Gateway Abstract Class
 |--------------------------------------------------------------------------
 */
@@ -318,6 +283,8 @@ class FilmWorld_Gateway_Zarinpal extends FilmWorld_Gateway {
     }
 }
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Zibal Gateway
@@ -350,18 +317,6 @@ class FilmWorld_Gateway_Zibal extends FilmWorld_Gateway {
                 'required'    => true,
                 'dir'         => 'ltr',
             ],
-            [
-                'id'          => 'filmworld_gw_zibal_sandbox',
-                'key'         => 'sandbox',
-                'label'       => 'حالت تست',
-                'type'        => 'select',
-                'options'     => [
-                    'yes' => 'بله - حالت تست',
-                    'no'  => 'خیر - پرداخت واقعی',
-                ],
-                'description' => 'در حالت تست تراکنش‌ها واقعی نیستند',
-                'required'    => false,
-            ],
         ];
     }
 
@@ -372,18 +327,16 @@ class FilmWorld_Gateway_Zibal extends FilmWorld_Gateway {
             return new WP_Error('no_merchant', 'مرچنت کد زیبال تنظیم نشده است.');
         }
 
-        $data = [
-            'merchant'    => $merchant,
-            'amount'      => (int) $amount,
-            'callbackUrl' => $callback_url,
-            'description' => $description,
-            'orderId'     => time() . '-' . $user_id,
-        ];
-
         $response = wp_remote_post('https://gateway.zibal.ir/v1/request', [
             'timeout' => 15,
             'headers' => ['Content-Type' => 'application/json'],
-            'body'    => wp_json_encode($data),
+            'body'    => wp_json_encode([
+                'merchant'    => $merchant,
+                'amount'      => (int) $amount,
+                'callbackUrl' => $callback_url,
+                'description' => $description,
+                'orderId'     => time() . '-' . $user_id,
+            ]),
         ]);
 
         if (is_wp_error($response)) {
@@ -400,7 +353,7 @@ class FilmWorld_Gateway_Zibal extends FilmWorld_Gateway {
         }
 
         $code = $body['result'] ?? 'نامشخص';
-        $msg = $body['message'] ?? 'خطا در ایجاد تراکنش زیبال (کد: ' . $code . ')';
+        $msg  = $body['message'] ?? 'خطا در ایجاد تراکنش زیبال (کد: ' . $code . ')';
         return new WP_Error('payment_failed', $msg);
     }
 
@@ -432,7 +385,7 @@ class FilmWorld_Gateway_Zibal extends FilmWorld_Gateway {
         }
 
         $code = $body['result'] ?? 0;
-        $msg = $body['message'] ?? 'خطا در تأیید پرداخت زیبال (کد: ' . $code . ')';
+        $msg  = $body['message'] ?? 'خطا در تأیید پرداخت زیبال (کد: ' . $code . ')';
         return new WP_Error('verify_failed', $msg);
     }
 }
@@ -479,7 +432,7 @@ class FilmWorld_Gateway_IDPay extends FilmWorld_Gateway {
                     'yes' => 'بله - حالت تست',
                     'no'  => 'خیر - پرداخت واقعی',
                 ],
-                'description' => 'در حالت تست تراکنش‌ها واقعی نیستند',
+                'description' => 'در حالت تست هدر X-SANDBOX: 1 ارسال می‌شود و حساسیت آدرس سایت و IP برداشته می‌شود',
                 'required'    => false,
             ],
         ];
@@ -522,7 +475,7 @@ class FilmWorld_Gateway_IDPay extends FilmWorld_Gateway {
             ];
         }
 
-        $msg = $body['error_message'] ?? 'خطا در ایجاد تراکنش آی‌دی‌پی';
+        $msg  = $body['error_message'] ?? 'خطا در ایجاد تراکنش آی‌دی‌پی';
         $code = $body['error_code'] ?? 'نامشخص';
         return new WP_Error('payment_failed', $msg . ' (کد: ' . $code . ')');
     }
@@ -559,254 +512,9 @@ class FilmWorld_Gateway_IDPay extends FilmWorld_Gateway {
             ];
         }
 
-        $msg = $body['error_message'] ?? 'خطا در تأیید پرداخت آی‌دی‌پی';
+        $msg  = $body['error_message'] ?? 'خطا در تأیید پرداخت آی‌دی‌پی';
         $code = $body['error_code'] ?? 'نامشخص';
         return new WP_Error('verify_failed', $msg . ' (کد: ' . $code . ')');
-    }
-}
-
-/*
-|--------------------------------------------------------------------------
-| Nextpay Gateway
-|--------------------------------------------------------------------------
-*/
-
-class FilmWorld_Gateway_Nextpay extends FilmWorld_Gateway {
-
-    public function get_id() {
-        return 'nextpay';
-    }
-
-    public function get_name() {
-        return 'نکست‌پی (Nextpay)';
-    }
-
-    public function get_payment_url($token) {
-        return 'https://nextpay.org/nx/gateway/payment/' . $token;
-    }
-
-    public function get_settings_fields() {
-        return [
-            [
-                'id'          => 'filmworld_gw_nextpay_api_key',
-                'key'         => 'api_key',
-                'label'       => 'API Key',
-                'type'        => 'text',
-                'placeholder' => 'کلید API نکست‌پی',
-                'description' => 'کلید API دریافتی از پنل نکست‌پی',
-                'required'    => true,
-                'dir'         => 'ltr',
-            ],
-            [
-                'id'          => 'filmworld_gw_nextpay_sandbox',
-                'key'         => 'sandbox',
-                'label'       => 'حالت تست',
-                'type'        => 'select',
-                'options'     => [
-                    'yes' => 'بله - حالت تست',
-                    'no'  => 'خیر - پرداخت واقعی',
-                ],
-                'description' => 'در حالت تست تراکنش‌ها واقعی نیستند',
-                'required'    => false,
-            ],
-        ];
-    }
-
-    public function create_payment($amount, $description, $callback_url, $user_id) {
-        $api_key = $this->get_setting('api_key');
-
-        if (empty($api_key)) {
-            return new WP_Error('no_api_key', 'کلید API نکست‌پی تنظیم نشده است.');
-        }
-
-        $data = [
-            'api_key'      => $api_key,
-            'amount'       => (int) $amount,
-            'callback_uri' => $callback_url,
-            'order_id'     => time() . '-' . $user_id,
-            'user_id'      => $user_id,
-            'description'  => $description,
-        ];
-
-        $sandbox = $this->get_setting('sandbox') === 'yes';
-        if ($sandbox) {
-            $data['sandbox'] = 1;
-        }
-
-        $response = wp_remote_post('https://nextpay.org/nx/gateway/token', [
-            'timeout' => 15,
-            'headers' => ['Content-Type' => 'application/json'],
-            'body'    => wp_json_encode($data),
-        ]);
-
-        if (is_wp_error($response)) {
-            return new WP_Error('connection_error', 'خطا در اتصال به نکست‌پی.');
-        }
-
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-
-        if (!empty($body['code']) && $body['code'] === -1 && !empty($body['trans_id'])) {
-            return [
-                'authority' => $body['trans_id'],
-                'url'       => $this->get_payment_url($body['trans_id']),
-            ];
-        }
-
-        $msg = $body['message'] ?? 'خطا در ایجاد تراکنش نکست‌پی';
-        return new WP_Error('payment_failed', $msg);
-    }
-
-    public function verify_payment($amount, $authority) {
-        $api_key = $this->get_setting('api_key');
-
-        $data = [
-            'api_key'  => $api_key,
-            'amount'   => (int) $amount,
-            'trans_id' => $authority,
-        ];
-
-        $sandbox = $this->get_setting('sandbox') === 'yes';
-        if ($sandbox) {
-            $data['sandbox'] = 1;
-        }
-
-        $response = wp_remote_post('https://nextpay.org/nx/gateway/verify', [
-            'timeout' => 15,
-            'headers' => ['Content-Type' => 'application/json'],
-            'body'    => wp_json_encode($data),
-        ]);
-
-        if (is_wp_error($response)) {
-            return new WP_Error('verify_error', 'خطا در اتصال به نکست‌پی.');
-        }
-
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-
-        if (!empty($body['code']) && $body['code'] === 0) {
-            return [
-                'success'   => true,
-                'ref_id'    => (string) ($body['transaction_id'] ?? $authority),
-                'authority' => $authority,
-                'amount'    => $amount,
-            ];
-        }
-
-        $msg = $body['message'] ?? 'خطا در تأیید پرداخت نکست‌پی';
-        return new WP_Error('verify_failed', $msg);
-    }
-}
-
-/*
-|--------------------------------------------------------------------------
-| Pay.ir Gateway
-|--------------------------------------------------------------------------
-*/
-
-class FilmWorld_Gateway_Payir extends FilmWorld_Gateway {
-
-    public function get_id() {
-        return 'payir';
-    }
-
-    public function get_name() {
-        return 'پی‌آی‌آر (Pay.ir)';
-    }
-
-    public function get_payment_url($token) {
-        return 'https://pay.ir/pg/' . $token;
-    }
-
-    public function get_settings_fields() {
-        return [
-            [
-                'id'          => 'filmworld_gw_payir_api_key',
-                'key'         => 'api_key',
-                'label'       => 'API Key',
-                'type'        => 'text',
-                'placeholder' => 'کلید API پی‌آی‌آر',
-                'description' => 'کلید API دریافتی از پنل پی‌آی‌آر',
-                'required'    => true,
-                'dir'         => 'ltr',
-            ],
-            [
-                'id'          => 'filmworld_gw_payir_sandbox',
-                'key'         => 'sandbox',
-                'label'       => 'حالت تست',
-                'type'        => 'select',
-                'options'     => [
-                    'yes' => 'بله - حالت تست',
-                    'no'  => 'خیر - پرداخت واقعی',
-                ],
-                'description' => 'در حالت تست تراکنش‌ها واقعی نیستند',
-                'required'    => false,
-            ],
-        ];
-    }
-
-    public function create_payment($amount, $description, $callback_url, $user_id) {
-        $api_key = $this->get_setting('api_key');
-
-        if (empty($api_key)) {
-            return new WP_Error('no_api_key', 'کلید API پی‌آی‌آر تنظیم نشده است.');
-        }
-
-        $response = wp_remote_post('https://pay.ir/pg/send', [
-            'timeout' => 15,
-            'headers' => ['Content-Type' => 'application/json'],
-            'body'    => wp_json_encode([
-                'amount'      => (int) $amount,
-                'description' => $description,
-                'callback'    => $callback_url,
-                'order_id'    => time() . '-' . $user_id,
-            ]),
-        ]);
-
-        if (is_wp_error($response)) {
-            return new WP_Error('connection_error', 'خطا در اتصال به پی‌آی‌آر.');
-        }
-
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-
-        if (!empty($body['token']) && empty($body['error'])) {
-            return [
-                'authority' => $body['token'],
-                'url'       => $this->get_payment_url($body['token']),
-            ];
-        }
-
-        $msg = $body['errorMessage'] ?? 'خطا در ایجاد تراکنش پی‌آی‌آر';
-        return new WP_Error('payment_failed', $msg);
-    }
-
-    public function verify_payment($amount, $authority) {
-        $api_key = $this->get_setting('api_key');
-
-        $response = wp_remote_post('https://pay.ir/pg/verify', [
-            'timeout' => 15,
-            'headers' => ['Content-Type' => 'application/json'],
-            'body'    => wp_json_encode([
-                'api_key' => $api_key,
-                'token'   => $authority,
-            ]),
-        ]);
-
-        if (is_wp_error($response)) {
-            return new WP_Error('verify_error', 'خطا در اتصال به پی‌آی‌آر.');
-        }
-
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-
-        if (!empty($body['status']) && $body['status'] === 1) {
-            return [
-                'success'   => true,
-                'ref_id'    => (string) ($body['transId'] ?? $authority),
-                'authority' => $authority,
-                'amount'    => $amount,
-            ];
-        }
-
-        $msg = $body['errorMessage'] ?? 'خطا در تأیید پرداخت پی‌آی‌آر';
-        return new WP_Error('verify_failed', $msg);
     }
 }
 
@@ -824,8 +532,6 @@ function filmworld_get_all_gateways() {
             'zarinpal' => new FilmWorld_Gateway_Zarinpal(),
             'zibal'    => new FilmWorld_Gateway_Zibal(),
             'idpay'    => new FilmWorld_Gateway_IDPay(),
-            'nextpay'  => new FilmWorld_Gateway_Nextpay(),
-            'payir'    => new FilmWorld_Gateway_Payir(),
         ];
     }
 
@@ -842,7 +548,7 @@ function filmworld_get_enabled_gateways() {
 
     $result = [];
     foreach ($enabled as $id) {
-        if (isset($all[$id])) {
+        if (isset($all[$id]) && $all[$id]->is_configured()) {
             $result[$id] = $all[$id];
         }
     }
@@ -874,10 +580,10 @@ function filmworld_ajax_init_payment() {
         wp_send_json_error(['message' => 'خطای امنیتی. لطفاً دوباره تلاش کنید.']);
     }
 
-    // Validate plan
-    $plans = filmworld_get_plans();
-    if (!isset($plans[$plan_key])) {
-        wp_send_json_error(['message' => 'پلن انتخاب شده معتبر نیست.']);
+    // Validate package
+    $packages = filmworld_get_day_packages();
+    if (!isset($packages[$plan_key])) {
+        wp_send_json_error(['message' => 'بسته انتخاب شده معتبر نیست.']);
     }
 
     // Validate gateway
@@ -890,8 +596,8 @@ function filmworld_ajax_init_payment() {
         wp_send_json_error(['message' => 'درگاه "' . $gateway->get_name() . '" به درستی تنظیم نشده است.']);
     }
 
-    $plan    = $plans[$plan_key];
-    $user_id = get_current_user_id();
+    $pkg      = $packages[$plan_key];
+    $user_id  = get_current_user_id();
 
     // Build callback URL with gateway identifier
     $callback = add_query_arg([
@@ -901,8 +607,8 @@ function filmworld_ajax_init_payment() {
     ], home_url('/account/'));
 
     $result = $gateway->create_payment(
-        $plan['price'],
-        'عضویت ' . $plan['name'] . ' - کاربر #' . $user_id,
+        $pkg['price'],
+        $pkg['days'] . ' روز اشتراک - کاربر #' . $user_id,
         $callback,
         $user_id
     );
@@ -916,7 +622,8 @@ function filmworld_ajax_init_payment() {
         'authority' => $result['authority'],
         'plan'      => $plan_key,
         'gateway'   => $gateway_id,
-        'price'     => $plan['price'],
+        'price'     => $pkg['price'],
+        'days'      => $pkg['days'],
         'time'      => time(),
     ]);
 
@@ -927,8 +634,8 @@ function filmworld_ajax_init_payment() {
         'user_id'    => $user_id,
         'gateway'    => $gateway_id,
         'plan_key'   => $plan_key,
-        'plan_name'  => $plan['name'],
-        'amount'     => $plan['price'],
+        'plan_name'  => $pkg['days'] . ' روز',
+        'amount'     => $pkg['price'],
         'authority'  => $result['authority'],
         'status'     => 'pending',
         'created_at' => current_time('mysql'),
@@ -960,13 +667,11 @@ function filmworld_handle_payment_callback() {
         wp_die('تراکنش نامعتبر است یا قبلاً پردازش شده.');
     }
 
-    // Detect authority from different gateway params
+    // Detect authority from different gateway callbacks
     $authority = sanitize_text_field(
-        $_GET['Authority']  // Zarinpal
-        ?? $_GET['trackId'] // Zibal
-        ?? $_GET['id']      // IDPay
-        ?? $_GET['token']   // Pay.ir
-        ?? $_GET['trans_id'] // Nextpay
+        $_GET['Authority']   // Zarinpal
+        ?? $_GET['trackId']  // Zibal
+        ?? $_GET['id']       // IDPay
         ?? $pending['authority']
     );
 
@@ -996,12 +701,6 @@ function filmworld_handle_payment_callback() {
             break;
         case 'idpay':
             if (($_GET['status'] ?? '') !== '10') $is_cancelled = true;
-            break;
-        case 'payir':
-            if (($_GET['status'] ?? '') !== '1') $is_cancelled = true;
-            break;
-        case 'nextpay':
-            if (empty($_GET['trans_id'])) $is_cancelled = true;
             break;
     }
 
@@ -1038,10 +737,11 @@ function filmworld_handle_payment_callback() {
         exit;
     }
 
-    // Activate membership
-    $expire = time() + ($plan['days'] * 86400);
-    update_user_meta($user_id, 'filmworld_plan', $plan_key);
-    update_user_meta($user_id, 'filmworld_expire', $expire);
+    // Activate — add days (extends if active)
+    $days = intval($pending['days'] ?? 0);
+    if ($days > 0) {
+        filmworld_add_days($user_id, $days);
+    }
 
     // Update payment record to success
     $wpdb->update($table, [
@@ -1074,7 +774,7 @@ add_action('template_redirect', 'filmworld_handle_payment_callback');
 
 /*
 |--------------------------------------------------------------------------
-| Admin Settings Page (Multi-Gateway)
+| Admin Settings Page
 |--------------------------------------------------------------------------
 */
 
@@ -1093,36 +793,57 @@ function filmworld_payment_settings_page() {
         }
         update_option('filmworld_enabled_gateways', array_map('sanitize_text_field', $enabled));
 
-        // Save each gateway's settings
-        $all_gateways = filmworld_get_all_gateways();
-        foreach ($all_gateways as $gw) {
-            foreach ($gw->get_settings_fields() as $field) {
-                $value = sanitize_text_field($_POST[$field['id']] ?? '');
-                update_option($field['id'], $value);
-            }
-        }
+        // Save Zarinpal settings
+        update_option('filmworld_gw_zarinpal_merchant', sanitize_text_field($_POST['filmworld_gw_zarinpal_merchant'] ?? ''));
+        update_option('filmworld_gw_zarinpal_sandbox', sanitize_text_field($_POST['filmworld_gw_zarinpal_sandbox'] ?? 'no'));
 
-        // Save plans
-        $plans     = [];
-        $plan_keys = ['monthly', 'quarterly', 'yearly'];
-        foreach ($plan_keys as $key) {
-            $plans[$key] = [
-                'name'        => sanitize_text_field($_POST["plan_{$key}_name"] ?? ''),
-                'price'       => intval($_POST["plan_{$key}_price"] ?? 0),
-                'days'        => intval($_POST["plan_{$key}_days"] ?? 0),
-                'description' => sanitize_textarea_field($_POST["plan_{$key}_desc"] ?? ''),
+        // Save Zibal settings
+        update_option('filmworld_gw_zibal_merchant', sanitize_text_field($_POST['filmworld_gw_zibal_merchant'] ?? ''));
+
+        // Save IDPay settings
+        update_option('filmworld_gw_idpay_api_key', sanitize_text_field($_POST['filmworld_gw_idpay_api_key'] ?? ''));
+        update_option('filmworld_gw_idpay_sandbox', sanitize_text_field($_POST['filmworld_gw_idpay_sandbox'] ?? 'no'));
+
+        // Save day packages
+        $pkg_keys  = sanitize_text_field($_POST['pkg_keys'] ?? '');
+        $pkg_keys  = $pkg_keys ? explode(',', $pkg_keys) : [];
+        $packages  = [];
+        foreach ($pkg_keys as $key) {
+            $key = trim($key);
+            if (empty($key)) continue;
+            if (!empty($_POST['pkg_delete']) && in_array($key, $_POST['pkg_delete'])) continue;
+            $packages[$key] = [
+                'days'  => intval($_POST["pkg_{$key}_days"] ?? 0),
+                'price' => intval($_POST["pkg_{$key}_price"] ?? 0),
             ];
         }
-        update_option('filmworld_plans', $plans);
+        // Keep only packages with valid days
+        $packages = array_filter($packages, function($p) { return $p['days'] > 0; });
+        update_option('filmworld_day_packages', $packages);
 
         echo '<div class="notice notice-success is-dismissible"><p>تنظیمات با موفقیت ذخیره شد.</p></div>';
     }
 
-    $all_gateways = filmworld_get_all_gateways();
-    $enabled      = get_option('filmworld_enabled_gateways', ['zarinpal']);
-    $plans        = filmworld_get_plans();
-    $plan_keys    = ['monthly', 'quarterly', 'yearly'];
-    $plan_labels  = ['monthly' => 'یک ماهه', 'quarterly' => 'سه ماهه', 'yearly' => 'یک ساله'];
+    // Handle add new package
+    if (isset($_POST['filmworld_add_package']) && check_admin_referer('filmworld_payment_settings')) {
+        $new_days  = intval($_POST['new_pkg_days'] ?? 0);
+        $new_price = intval($_POST['new_pkg_price'] ?? 0);
+        if ($new_days > 0 && $new_price > 0) {
+            $packages = get_option('filmworld_day_packages', []);
+            $packages[$new_days] = ['days' => $new_days, 'price' => $new_price];
+            update_option('filmworld_day_packages', $packages);
+            echo '<div class="notice notice-success is-dismissible"><p>بسته جدید اضافه شد.</p></div>';
+        }
+    }
+
+    $enabled         = get_option('filmworld_enabled_gateways', ['zarinpal']);
+    if (!is_array($enabled)) $enabled = ['zarinpal'];
+    $merchant_value  = get_option('filmworld_gw_zarinpal_merchant', '');
+    $sandbox_value   = get_option('filmworld_gw_zarinpal_sandbox', 'no');
+    $zibal_merchant  = get_option('filmworld_gw_zibal_merchant', '');
+    $idpay_api_key   = get_option('filmworld_gw_idpay_api_key', '');
+    $idpay_sandbox   = get_option('filmworld_gw_idpay_sandbox', 'no');
+    $packages        = filmworld_get_day_packages();
     ?>
 
     <div class="wrap">
@@ -1131,112 +852,166 @@ function filmworld_payment_settings_page() {
         <form method="post">
             <?php wp_nonce_field('filmworld_payment_settings'); ?>
 
-            <!-- ====== Gateway Selection ====== -->
-            <h2 class="title">درگاه‌های پرداخت</h2>
-            <p class="description" style="margin-bottom:15px;">
-                درگاه‌های مورد نظر خود را انتخاب و تنظیم کنید. کاربران هنگام خرید اشتراک می‌توانند درگاه دلخواه را انتخاب نمایند.
-            </p>
+            <!-- ====== Zarinpal ====== -->
+            <h2 class="title">درگاه پرداخت زرین‌پال</h2>
 
-            <table class="widefat striped" style="max-width:800px;">
+            <div style="border:1px solid #ccd0d4;padding:15px 20px;border-radius:4px;margin-bottom:15px;background:#fff;max-width:600px;">
+                <p style="margin-bottom:12px;">
+                    <label style="font-weight:bold;">
+                        <input type="checkbox" name="enabled_gateways[]" value="zarinpal" <?php checked(in_array('zarinpal', $enabled)); ?>>
+                        فعال بودن این درگاه
+                    </label>
+                    <?php if (!empty($merchant_value)) : ?>
+                        <span style="color:green;margin-right:10px;">&#10003; تنظیم شده</span>
+                    <?php else : ?>
+                        <span style="color:#999;margin-right:10px;">تنظیم نشده</span>
+                    <?php endif; ?>
+                </p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="filmworld_gw_zarinpal_merchant">مرچنت کد</label></th>
+                        <td>
+                            <input type="text" name="filmworld_gw_zarinpal_merchant" id="filmworld_gw_zarinpal_merchant"
+                                   value="<?php echo esc_attr($merchant_value); ?>" class="regular-text"
+                                   placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                   dir="ltr" style="text-align:left;">
+                            <p class="description">مرچنت کد دریافتی از پنل زرین‌پال</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="filmworld_gw_zarinpal_sandbox">حالت تست (Sandbox)</label></th>
+                        <td>
+                            <select name="filmworld_gw_zarinpal_sandbox" id="filmworld_gw_zarinpal_sandbox">
+                                <option value="yes" <?php selected($sandbox_value, 'yes'); ?>>بله - حالت تست</option>
+                                <option value="no" <?php selected($sandbox_value, 'no'); ?>>خیر - پرداخت واقعی</option>
+                            </select>
+                            <p class="description">در حالت تست تراکنش‌ها واقعی نیستند</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- ====== Zibal ====== -->
+            <h2 class="title">درگاه پرداخت زیبال</h2>
+
+            <div style="border:1px solid #ccd0d4;padding:15px 20px;border-radius:4px;margin-bottom:15px;background:#fff;max-width:600px;">
+                <p style="margin-bottom:12px;">
+                    <label style="font-weight:bold;">
+                        <input type="checkbox" name="enabled_gateways[]" value="zibal" <?php checked(in_array('zibal', $enabled)); ?>>
+                        فعال بودن این درگاه
+                    </label>
+                    <?php if (!empty($zibal_merchant)) : ?>
+                        <span style="color:green;margin-right:10px;">&#10003; تنظیم شده</span>
+                    <?php else : ?>
+                        <span style="color:#999;margin-right:10px;">تنظیم نشده</span>
+                    <?php endif; ?>
+                </p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="filmworld_gw_zibal_merchant">مرچنت کد</label></th>
+                        <td>
+                            <input type="text" name="filmworld_gw_zibal_merchant" id="filmworld_gw_zibal_merchant"
+                                   value="<?php echo esc_attr($zibal_merchant); ?>" class="regular-text"
+                                   placeholder="مرچنت کد زیبال"
+                                   dir="ltr" style="text-align:left;">
+                            <p class="description">مرچنت کد دریافتی از پنل زیبال</p>
+                        </td>
+                    </tr>
+                </table>
+                <p class="description" style="color:#999;">زیبال حالت تست جداگانه‌ای ندارد — با مرچنت واقعی تست می‌شود.</p>
+            </div>
+
+            <!-- ====== IDPay ====== -->
+            <h2 class="title">درگاه پرداخت آی‌دی‌پی (IDPay)</h2>
+
+            <div style="border:1px solid #ccd0d4;padding:15px 20px;border-radius:4px;margin-bottom:15px;background:#fff;max-width:600px;">
+                <p style="margin-bottom:12px;">
+                    <label style="font-weight:bold;">
+                        <input type="checkbox" name="enabled_gateways[]" value="idpay" <?php checked(in_array('idpay', $enabled)); ?>>
+                        فعال بودن این درگاه
+                    </label>
+                    <?php if (!empty($idpay_api_key)) : ?>
+                        <span style="color:green;margin-right:10px;">&#10003; تنظیم شده</span>
+                    <?php else : ?>
+                        <span style="color:#999;margin-right:10px;">تنظیم نشده</span>
+                    <?php endif; ?>
+                </p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="filmworld_gw_idpay_api_key">API Key</label></th>
+                        <td>
+                            <input type="text" name="filmworld_gw_idpay_api_key" id="filmworld_gw_idpay_api_key"
+                                   value="<?php echo esc_attr($idpay_api_key); ?>" class="regular-text"
+                                   placeholder="کلید API آی‌دی‌پی"
+                                   dir="ltr" style="text-align:left;">
+                            <p class="description">کلید API دریافتی از پنل آی‌دی‌پی</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="filmworld_gw_idpay_sandbox">حالت تست (Sandbox)</label></th>
+                        <td>
+                            <select name="filmworld_gw_idpay_sandbox" id="filmworld_gw_idpay_sandbox">
+                                <option value="yes" <?php selected($idpay_sandbox, 'yes'); ?>>بله - حالت تست</option>
+                                <option value="no" <?php selected($idpay_sandbox, 'no'); ?>>خیر - پرداخت واقعی</option>
+                            </select>
+                            <p class="description">در حالت تست هدر X-SANDBOX ارسال شده و حساسیت آدرس سایت و IP برداشته می‌شود</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- ====== Day Packages ====== -->
+            <h2 class="title" style="margin-top:30px;">بسته‌های اشتراک (روز)</h2>
+            <p class="description" style="margin-bottom:15px;">هر بسته تعداد روز و قیمت مشخصی دارد. کاربران هنگام خرید یکی را انتخاب می‌کنند.</p>
+
+            <input type="hidden" name="pkg_keys" value="<?php echo esc_attr(implode(',', array_keys($packages))); ?>">
+
+            <table class="widefat striped" style="max-width:600px;">
                 <thead>
                     <tr>
-                        <th style="width:40px;">فعال</th>
-                        <th>درگاه پرداخت</th>
-                        <th style="width:120px;">وضعیت تنظیمات</th>
+                        <th>تعداد روز</th>
+                        <th>قیمت (تومان)</th>
+                        <th style="width:60px;">حذف</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($all_gateways as $id => $gw) :
-                        $is_enabled    = in_array($id, $enabled);
-                        $is_configured = $gw->is_configured();
-                    ?>
+                    <?php foreach ($packages as $key => $pkg) : ?>
                     <tr>
-                        <td style="text-align:center;">
-                            <input type="checkbox" name="enabled_gateways[]" value="<?php echo esc_attr($id); ?>" <?php checked($is_enabled); ?>>
+                        <td>
+                            <input type="number" name="pkg_<?php echo esc_attr($key); ?>_days" value="<?php echo esc_attr($pkg['days']); ?>" min="1" style="width:100px;">
                         </td>
                         <td>
-                            <strong><?php echo esc_html($gw->get_name()); ?></strong>
-                            <code style="color:#666;margin-right:5px;">(<?php echo esc_html($id); ?>)</code>
+                            <input type="number" name="pkg_<?php echo esc_attr($key); ?>_price" value="<?php echo esc_attr($pkg['price']); ?>" min="0" style="width:150px;">
                         </td>
                         <td>
-                            <?php if ($is_configured) : ?>
-                                <span style="color:green;font-weight:bold;">&#10003; تنظیم شده</span>
-                            <?php else : ?>
-                                <span style="color:#999;">تنظیم نشده</span>
-                            <?php endif; ?>
+                            <label style="color:#d63638;cursor:pointer;">
+                                <input type="checkbox" name="pkg_delete[]" value="<?php echo esc_attr($key); ?>"> حذف
+                            </label>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
 
-            <!-- ====== Per-Gateway Settings ====== -->
-            <h2 class="title" style="margin-top:30px;">تنظیمات هر درگاه</h2>
-
-            <?php foreach ($all_gateways as $id => $gw) : ?>
-            <div id="gateway-box-<?php echo esc_attr($id); ?>" style="border:1px solid #ccd0d4;padding:15px 20px;border-radius:4px;margin-bottom:15px;background:#fff;">
-                <h3 style="margin-top:0;"><?php echo esc_html($gw->get_name()); ?></h3>
-                <table class="form-table">
-                    <?php foreach ($gw->get_settings_fields() as $field) :
-                        $value = get_option($field['id'], '');
-                    ?>
-                    <tr>
-                        <th><label for="<?php echo esc_attr($field['id']); ?>"><?php echo esc_html($field['label']); ?></label></th>
-                        <td>
-                            <?php if ($field['type'] === 'select') : ?>
-                            <select name="<?php echo esc_attr($field['id']); ?>" id="<?php echo esc_attr($field['id']); ?>">
-                                <?php foreach ($field['options'] as $opt_val => $opt_label) : ?>
-                                <option value="<?php echo esc_attr($opt_val); ?>" <?php selected($value, $opt_val); ?>>
-                                    <?php echo esc_html($opt_label); ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php else : ?>
-                            <input type="text" name="<?php echo esc_attr($field['id']); ?>" id="<?php echo esc_attr($field['id']); ?>"
-                                   value="<?php echo esc_attr($value); ?>" class="regular-text"
-                                   placeholder="<?php echo esc_attr($field['placeholder'] ?? ''); ?>"
-                                   <?php echo !empty($field['dir']) ? 'dir="' . esc_attr($field['dir']) . '" style="text-align:left;"' : ''; ?>>
-                            <?php endif; ?>
-                            <?php if (!empty($field['description'])) : ?>
-                            <p class="description"><?php echo esc_html($field['description']); ?></p>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </table>
-            </div>
-            <?php endforeach; ?>
-
-            <!-- ====== Plan Configuration ====== -->
-            <h2 class="title" style="margin-top:30px;">پلن‌های عضویت</h2>
-
-            <?php foreach ($plan_keys as $key) : $p = $plans[$key] ?? []; ?>
-            <div style="border:1px solid #ccd0d4;padding:15px 20px;border-radius:4px;margin-bottom:15px;background:#fff;">
-                <h3 style="margin-top:0;"><?php echo esc_html($plan_labels[$key]); ?></h3>
-                <table class="form-table">
-                    <tr>
-                        <th>نام پلن</th>
-                        <td><input type="text" name="plan_<?php echo $key; ?>_name" value="<?php echo esc_attr($p['name'] ?? ''); ?>" class="regular-text"></td>
-                    </tr>
-                    <tr>
-                        <th>قیمت (تومان)</th>
-                        <td><input type="number" name="plan_<?php echo $key; ?>_price" value="<?php echo esc_attr($p['price'] ?? 0); ?>" min="0"></td>
-                    </tr>
-                    <tr>
-                        <th>مدت (روز)</th>
-                        <td><input type="number" name="plan_<?php echo $key; ?>_days" value="<?php echo esc_attr($p['days'] ?? 0); ?>" min="1"></td>
-                    </tr>
-                    <tr>
-                        <th>توضیحات</th>
-                        <td><textarea name="plan_<?php echo $key; ?>_desc" rows="2" class="large-text"><?php echo esc_textarea($p['description'] ?? ''); ?></textarea></td>
-                    </tr>
-                </table>
-            </div>
-            <?php endforeach; ?>
-
-            <p class="submit">
+            <p class="submit" style="margin-top:15px;">
                 <button type="submit" name="filmworld_save_payment_settings" class="button button-primary">ذخیره تنظیمات</button>
             </p>
+        </form>
+
+        <!-- Add new package -->
+        <hr style="margin:30px 0;">
+        <h3>افزودن بسته جدید</h3>
+        <form method="post" style="display:flex;gap:10px;align-items:flex-end;">
+            <?php wp_nonce_field('filmworld_payment_settings'); ?>
+            <div>
+                <label><strong>تعداد روز:</strong></label><br>
+                <input type="number" name="new_pkg_days" placeholder="مثلاً 60" min="1" class="regular-text" style="width:120px;">
+            </div>
+            <div>
+                <label><strong>قیمت (تومان):</strong></label><br>
+                <input type="number" name="new_pkg_price" placeholder="مثلاً 79000" min="0" class="regular-text" style="width:150px;">
+            </div>
+            <button type="submit" name="filmworld_add_package" class="button">افزودن</button>
         </form>
     </div>
 
@@ -1249,17 +1024,7 @@ function filmworld_payment_settings_page() {
 |--------------------------------------------------------------------------
 */
 
-function filmworld_payment_admin_menu() {
-    add_submenu_page(
-        'filmworld-taxonomies',
-        'تنظیمات پرداخت',
-        'تنظیمات پرداخت',
-        'manage_options',
-        'filmworld-payment-settings',
-        'filmworld_payment_settings_page'
-    );
-}
-add_action('admin_menu', 'filmworld_payment_admin_menu');
+// Admin submenu is registered in admin-menu.php — no duplicate here
 
 /*
 |--------------------------------------------------------------------------

@@ -1,59 +1,50 @@
 /*
 |--------------------------------------------------------------------------
-| FilmWorld - Search Page Styles
+| FilmWorld v3.0 — Search Page Styles
 |--------------------------------------------------------------------------
 */
 
-.filmworld-search > h1 {
-    margin-bottom: 8px;
+.fw-search-page { max-width: 1400px; margin: 0 auto; padding: 30px 24px; }
+
+.fw-search-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 6px;
 }
 
-.filmworld-search-count {
+.fw-search-count {
     color: var(--fw-text-muted);
     font-size: 0.9rem;
-    margin-bottom: 25px;
+    margin-bottom: 24px;
 }
 
-.filmworld-search form {
+.fw-search-inline {
     margin-bottom: 30px;
+    max-width: 500px;
+    position: relative;
 }
 
-.filmworld-search form input[type="search"] {
+.fw-search-inline input {
     width: 100%;
-    max-width: 500px;
     padding: 14px 20px;
-    border: 2px solid var(--fw-border);
+    border: 1px solid var(--fw-border);
     border-radius: 50px;
     background: var(--fw-bg-card);
     color: var(--fw-text);
     font-family: var(--fw-font);
     font-size: 1rem;
     direction: rtl;
-    transition: border-color var(--fw-transition);
-    box-shadow: var(--fw-shadow);
-}
-
-.filmworld-search form input[type="search"]:focus {
-    outline: none;
-    border-color: var(--fw-primary);
-}
-
-.filmworld-search form button {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 12px 30px;
-    background: var(--fw-primary);
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    font-family: var(--fw-font);
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
     transition: all var(--fw-transition);
 }
 
-.filmworld-search form button:hover {
-    background: var(--fw-primary-hover);
-    transform: translateY(-1px);
+.fw-search-inline input:focus {
+    outline: none;
+    border-color: var(--fw-primary);
+    box-shadow: 0 0 0 3px var(--fw-primary-light);
+}
+
+@media (max-width: 768px) {
+    .fw-search-page { padding: 20px 16px; }
+    .fw-search-title { font-size: 1.3rem; }
 }

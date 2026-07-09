@@ -6,87 +6,48 @@ if (!defined('ABSPATH')) {
 
 /*
 |--------------------------------------------------------------------------
-| Template Loaders
+| Hide WordPress Admin Bar on Frontend
 |--------------------------------------------------------------------------
 */
 
-function filmworld_load_movie_template($template)
+add_filter('show_admin_bar', function() {
+    return current_user_can('manage_options');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Template Wrapper System
+| All FilmWorld pages use our own header/footer instead of the theme's
+|--------------------------------------------------------------------------
+*/
+
+function filmworld_is_plugin_page()
 {
-    if (is_singular('movie')) {
-        $custom_template = plugin_dir_path(dirname(__FILE__)) . 'templates/single-movie.php';
-        if (file_exists($custom_template)) {
-            return $custom_template;
-        }
-    }
-    return $template;
+    return is_front_page()
+        || is_singular('movie')
+        || is_singular('series')
+        || is_post_type_archive('movie')
+        || is_post_type_archive('series')
+        || is_tax(['genre', 'country', 'dubbed'])
+        || is_search()
+        || get_query_var('filmworld_page');
 }
 
-function filmworld_load_series_template($template)
+function filmworld_template_wrapper($template)
 {
-    if (is_singular('series')) {
-        $custom_template = plugin_dir_path(dirname(__FILE__)) . 'templates/single-series.php';
-        if (file_exists($custom_template)) {
-            return $custom_template;
-        }
+    if (!filmworld_is_plugin_page()) {
+        return $template;
     }
-    return $template;
-}
 
-function filmworld_load_movie_archive($template)
-{
-    if (is_post_type_archive('movie')) {
-        $archive_template = plugin_dir_path(dirname(__FILE__)) . 'templates/archive-movie.php';
-        if (file_exists($archive_template)) {
-            return $archive_template;
-        }
+    // Check if this is an auth page (login/register/account)
+    $fw_page = get_query_var('filmworld_page');
+    if (!empty($fw_page)) {
+        return FILMWORLD_PLUGIN_PATH . 'templates/wrapper-auth.php';
     }
-    return $template;
-}
 
-function filmworld_load_series_archive($template)
-{
-    if (is_post_type_archive('series')) {
-        $archive_template = plugin_dir_path(dirname(__FILE__)) . 'templates/archive-movie.php';
-        if (file_exists($archive_template)) {
-            return $archive_template;
-        }
-    }
-    return $template;
+    return FILMWORLD_PLUGIN_PATH . 'templates/wrapper.php';
 }
-
-function filmworld_load_front_page($template)
-{
-    if (is_front_page()) {
-        $front_page_template = plugin_dir_path(dirname(__FILE__)) . 'templates/front-page.php';
-        if (file_exists($front_page_template)) {
-            return $front_page_template;
-        }
-    }
-    return $template;
-}
-
-function filmworld_load_search_template($template)
-{
-    if (is_search()) {
-        $search_template = plugin_dir_path(dirname(__FILE__)) . 'templates/search.php';
-        if (file_exists($search_template)) {
-            return $search_template;
-        }
-    }
-    return $template;
-}
-
-function filmworld_load_taxonomy_template($template)
-{
-    $taxonomies = ['genre', 'country', 'dubbed'];
-    if (is_tax($taxonomies)) {
-        $archive_template = plugin_dir_path(dirname(__FILE__)) . 'templates/archive-movie.php';
-        if (file_exists($archive_template)) {
-            return $archive_template;
-        }
-    }
-    return $template;
-}
+add_filter('template_include', 'filmworld_template_wrapper', 999);
 
 /*
 |--------------------------------------------------------------------------
@@ -96,14 +57,15 @@ function filmworld_load_taxonomy_template($template)
 
 function filmworld_enqueue_assets()
 {
+    if (!filmworld_is_plugin_page()) {
+        return;
+    }
+
     $plugin_url = plugin_dir_url(dirname(__FILE__));
-    $version = '2.0.0';
+    $version = '3.0.0';
 
-    // Common styles (all pages)
+    // Main stylesheet (dark theme by default)
     wp_enqueue_style('filmworld-common', $plugin_url . 'assets/css/common.css', [], $version);
-
-    // Dark mode (auto + manual toggle)
-    wp_enqueue_style('filmworld-dark', $plugin_url . 'assets/css/dark.css', ['filmworld-common'], $version);
 
     // Page-specific styles
     if (is_singular('movie') || is_singular('series')) {
@@ -122,45 +84,51 @@ function filmworld_enqueue_assets()
         wp_enqueue_style('filmworld-search', $plugin_url . 'assets/css/search.css', ['filmworld-common'], $version);
     }
 
+    if (get_query_var('filmworld_page')) {
+        wp_enqueue_style('filmworld-auth', $plugin_url . 'assets/css/auth.css', ['filmworld-common'], $version);
+    }
+
     // Player JS on single pages
     if (is_singular('movie') || is_singular('series')) {
         wp_enqueue_script('filmworld-player', $plugin_url . 'assets/js/player.js', [], $version, true);
     }
 
-    // Main JS (dark mode toggle, favorites, etc.)
+    // Main JS (footer)
     wp_enqueue_script('filmworld-main', $plugin_url . 'assets/js/main.js', [], $version, true);
-    wp_localize_script('filmworld-main', 'filmworld_ajax', [
-        'ajax_url' => admin_url('admin-ajax.php'),
-        'nonce'    => wp_create_nonce('filmworld_nonce'),
-        'is_user'  => is_user_logged_in() ? '1' : '0',
-    ]);
 }
-
-/*
-|--------------------------------------------------------------------------
-| Hooks
-|--------------------------------------------------------------------------
-*/
-
-add_filter('search_template', 'filmworld_load_search_template');
-add_filter('single_template', 'filmworld_load_movie_template');
-add_filter('single_template', 'filmworld_load_series_template');
-add_filter('archive_template', 'filmworld_load_movie_archive');
-add_filter('archive_template', 'filmworld_load_series_archive');
-add_filter('frontpage_template', 'filmworld_load_front_page');
-add_filter('taxonomy_template', 'filmworld_load_taxonomy_template');
 
 add_action('wp_enqueue_scripts', 'filmworld_enqueue_assets');
 
 /*
 |--------------------------------------------------------------------------
-| Activation Hook - Flush Rewrite Rules
+| Localize filmworld_ajax in wp_head so inline scripts can use it
+| (main.js is loaded in footer, but inline scripts in templates run before footer)
+|--------------------------------------------------------------------------
+*/
+
+add_action('wp_head', function() {
+    if (!filmworld_is_plugin_page()) {
+        return;
+    }
+    ?>
+    <script type="text/javascript">
+    var filmworld_ajax = <?php echo wp_json_encode([
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('filmworld_nonce'),
+        'is_user'  => is_user_logged_in() ? '1' : '0',
+    ]); ?>;
+    </script>
+    <?php
+}, 1);
+
+/*
+|--------------------------------------------------------------------------
+| Activation Hook
 |--------------------------------------------------------------------------
 */
 
 function filmworld_activate_plugin()
 {
-    // Post types and taxonomies are registered on init, so we need to trigger them
     filmworld_register_movie_post_type();
     filmworld_register_series_post_type();
     filmworld_register_series_link_post_type();
@@ -168,6 +136,7 @@ function filmworld_activate_plugin()
     filmworld_register_genre_taxonomy();
     filmworld_register_country_taxonomy();
     filmworld_register_dubbed_taxonomy();
+    filmworld_auth_rewrites();
 
     flush_rewrite_rules();
 }
